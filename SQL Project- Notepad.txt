@@ -1,0 +1,32 @@
+1. "What are the top 7 genres with the highest number of tracks, and how many tracks are there in each of these genres?"
+	SELECT Genre.Name AS Genre, COUNT(Track.Trackid) AS TrackCount
+	FROM Genre
+	INNER JOIN Track ON Genre.Genreid = Track.Genreid
+	GROUP BY Genre
+	ORDER BY TrackCount DESC
+	LIMIT 7;
+
+2. Who is the artist with the highest number of albums, and how many albums do they have?
+	SELECT Artist.Name, max(Album.Albumid) AS AlbumCount
+    	FROM Artist
+    	INNER JOIN Album ON Artist.Artistid = Album.Artistid
+    	GROUP BY Artist.Name
+	ORDER BY AlbumCount DESC
+	LIMIT 10;
+
+3. What are the names of the top 5 genres with the highest total revenue
+	SELECT Genre.Name AS Genre, SUM(Track.Unitprice) AS TotalRevenue
+	FROM Genre
+	INNER JOIN Track ON Genre.Genreid = Track.Genreid
+	GROUP BY Genre.Name
+	ORDER BY TotalRevenue DESC
+	LIMIT 5;
+
+4. Which artists in the 'Rock' genre have generated a total revenue of 30 units or more from their tracks, and how many tracks do they have in this genre?
+	SELECT Artist.Name AS Artist, COUNT(Track.Trackid) AS TrackCount, SUM(Track.Unitprice) AS TotalRevenue
+	FROM Artist
+	INNER JOIN Album ON Artist.Artistid = Album.Artistid
+	INNER JOIN Track ON Album.Albumid = Track.Albumid
+	WHERE Track.Genreid = 1 -- Assuming Genreid 1 corresponds to the "Rock" genre
+	GROUP BY Artist.Name
+	HAVING SUM(Track.Unitprice) >= 30;
